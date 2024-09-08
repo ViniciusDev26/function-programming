@@ -3,15 +3,37 @@ defmodule Main do
     IO.gets(message) |> String.trim() |> String.to_integer()
   end
 
-  def main() do
-    number_one = getInput("Digite o custo do carro: ")
-    number_two = getInput("Digite o % do distribuidor: ")
-    number_two = getInput("Digite os impostos: ")
+  def convertPercent(percent) do
+    percent / 100
+  end
 
-    IO.puts("A média entre os números é: #{calculateAverage(number_one, number_two)}")
-    IO.puts("A diferença entre os números é: #{calculateDifferenceBetweenNumbers(number_one, number_two)}")
-    IO.puts("O produto entre os números é: #{multiplyNumbers(number_one, number_two)}")
-    IO.puts("A divisão entre os números é: #{divideNumbers(number_one, number_two)}")
+  def calculatePercentValue(percent, value) do
+    value * percent
+  end
+
+  def calculatePrice(factory_cost, distributor_cost, fees_cost) do
+    factory_cost + distributor_cost + fees_cost
+  end
+
+  def getEntityPercents(value)
+    when value <= 12000
+    do %{distributor: 5, fees: 0} end
+  def getEntityPercents(value)
+    when 12001 <= value and value <= 25000
+    do %{distributor: 10, fees: 15} end
+  def getEntityPercents(value)
+    when 25001 <= value
+    do %{distributor: 15, fees: 20} end
+
+  def main() do
+    car_cost = getInput("Digite o custo do carro: ")
+    %{distributor: distributor_percent, fees: fees_percent} = getEntityPercents(car_cost)
+
+    distributor_cost = convertPercent(distributor_percent) |> calculatePercentValue(car_cost)
+    fees_cost = convertPercent(fees_percent) |> calculatePercentValue(car_cost)
+    total = calculatePrice(car_cost, distributor_cost, fees_cost) |> :erlang.float_to_binary(decimals: 2)
+
+    IO.puts("O valor total do carro é: R$ #{total}")
   end
 end
 
