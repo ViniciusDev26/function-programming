@@ -1,7 +1,6 @@
 defmodule Main do
-  def calculateDifferenceBetweenValues(value1, value2) do
-    value1 - value2
-  end
+  def calculateDifferenceBetweenValues(value1, value2) when value1 >= value2 do value1 - value2 end
+  def calculateDifferenceBetweenValues(value1, value2) do value2 - value end
 
   def calculateDivisionBetweenValues(value1, value2) do
     value1 / value2
